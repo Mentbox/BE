@@ -1,5 +1,7 @@
 package com.example.mentbox.file.service;
 
+import com.example.mentbox.common.exception.ErrorCode;
+import com.example.mentbox.common.exception.NoFilesForMemberException;
 import com.example.mentbox.file.dto.FileResponse;
 import com.example.mentbox.file.dto.ScheduleDto;
 import com.example.mentbox.file.entity.File;
@@ -20,6 +22,10 @@ public class FileRead {
 
     public List<FileResponse> readAllFiles(Member member) {
         List<File> files = fileRepository.findByMember(member);
+
+        if (files.isEmpty()) {
+            throw new NoFilesForMemberException(ErrorCode.NoFilesForMemberException);
+        }
 
         List<FileResponse> responses = new ArrayList<>();
 
