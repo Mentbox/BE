@@ -3,6 +3,7 @@ package com.example.mentbox.file.dto;
 import com.example.mentbox.file.entity.File;
 import com.example.mentbox.file.entity.Material;
 import com.example.mentbox.file.utility.StringToDurationDeserializer;
+import com.example.mentbox.recording.entity.Recording;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.validation.Valid;
@@ -14,11 +15,12 @@ import lombok.NoArgsConstructor;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class FileCreateRequest {
+public class FileRequest {
 
     @NotBlank
     @Size(max = 20)
@@ -31,11 +33,24 @@ public class FileCreateRequest {
     @Valid
     private List<MaterialDto> materials;
 
+    private List<Recording> recordings;
+
+    public List<Material> materialsDtoToMaterials(List<MaterialDto> materialDtos) {
+        List<Material> result = new ArrayList<>();
+
+        for (MaterialDto materialDto : materialDtos) {
+            result.add(materialDto.toEntity());
+        }
+
+        return result;
+    }
+
     public File toEntity() {
         // 1) Builder 로 File 객체 생성
         File file = File.builder()
                 .title(this.title)
                 .targetDate(this.targetDate)
+                .recordings(this.recordings)
                 .build();
 
         // 2) MaterialDto → Material via builder, helper 메서드로 연관관계 설정
