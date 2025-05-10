@@ -2,29 +2,23 @@ package com.example.mentbox.file.dto;
 
 import com.example.mentbox.file.entity.File;
 import com.example.mentbox.file.entity.Material;
-import com.example.mentbox.file.utility.DurationToStringSerializer;
 import com.example.mentbox.file.utility.StringToDurationDeserializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class FileRequest {
+public class FileCreateRequest {
 
     @NotBlank
     @Size(max = 20)

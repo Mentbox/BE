@@ -1,10 +1,9 @@
 package com.example.mentbox.file.service;
 
-import com.example.mentbox.file.dto.FileRequest;
+import com.example.mentbox.file.dto.FileCreateRequest;
 import com.example.mentbox.file.dto.FileResponse;
 import com.example.mentbox.file.entity.File;
 import com.example.mentbox.file.repository.FileRepository;
-import com.example.mentbox.member.entity.Member;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ public class FileCreate {
     private final FileRepository fileRepository;
 
     @Transactional
-    public FileResponse createFile(FileRequest request) {
+    public FileResponse createFile(FileCreateRequest request) {
         File file = request.toEntity();
 
         fileRepository.save(file);

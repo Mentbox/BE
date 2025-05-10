@@ -3,7 +3,6 @@ package com.example.mentbox.file.dto;
 import com.example.mentbox.file.entity.File;
 import com.example.mentbox.file.entity.Material;
 import com.example.mentbox.file.utility.DurationToStringSerializer;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
