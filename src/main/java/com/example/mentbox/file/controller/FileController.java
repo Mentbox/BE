@@ -32,4 +32,10 @@ public class FileController {
 
     }
 
+    @DeleteMapping("/{fileId}")
+    public ResponseEntity<Void> deleteFile(@PathVariable Long id) {
+
+    }
+
+
 }
