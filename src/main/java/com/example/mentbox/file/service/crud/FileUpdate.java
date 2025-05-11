@@ -1,4 +1,4 @@
-package com.example.mentbox.file.service;
+package com.example.mentbox.file.service.crud;
 
 import com.example.mentbox.common.exception.ErrorCode;
 import com.example.mentbox.common.exception.ThereIsNotThatFileException;
@@ -20,12 +20,12 @@ public class FileUpdate {
     private final FileRepository fileRepository;
 
     @Transactional
-    public ResponseEntity<FileResponse> updateFile(Long id, FileRequest dto) {
+    public FileResponse updateFile(Long id, FileRequest dto) {
 
         File file = fileRepository.findById(id).orElseThrow(() -> new ThereIsNotThatFileException(ErrorCode.FILE_NOT_FOUND));
 
         file.update(dto);
 
-        return ResponseEntity.ok(FileResponse.from(file));
+        return FileResponse.from(file);
     }
 }

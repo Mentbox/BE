@@ -1,4 +1,4 @@
-package com.example.mentbox.file.service;
+package com.example.mentbox.file.service.crud;
 
 import com.example.mentbox.common.exception.ErrorCode;
 import com.example.mentbox.common.exception.ThereIsNotThatFileException;
