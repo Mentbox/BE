@@ -3,6 +3,7 @@ package com.example.mentbox.common.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -24,7 +25,12 @@ public class BaseTimeEntity {
 
     private LocalDateTime deletedAt;
 
+    @Builder.Default
+    @Column(nullable = false)
+    private boolean deleted = false;
+
     public void markDeleted() {
         this.deletedAt = LocalDateTime.now();
+        deleted = true;
     }
 }

@@ -1,11 +1,14 @@
 package com.example.mentbox.file.entity;
 
 import com.example.mentbox.common.entity.BaseTimeEntity;
+import com.example.mentbox.file.dto.FileRequest;
 import com.example.mentbox.recording.entity.Recording;
 import jakarta.persistence.*;
 import lombok.*;
 
 import com.example.mentbox.member.entity.Member;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,6 +20,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// 모든 SELECT 시 deleted = false 조건이 자동으로 붙음
+@Where(clause = "deleted = false")
 public class File extends BaseTimeEntity {
 
     @Id
@@ -28,6 +33,8 @@ public class File extends BaseTimeEntity {
 
     @Column
     LocalDate targetDate;
+
+
 
     @OneToMany(
             mappedBy = "file",
@@ -59,6 +66,14 @@ public class File extends BaseTimeEntity {
         materials.remove(material);
         material.setFile(null);
     }
+    public void update(FileRequest dto) {
+        this.title = dto.getTitle();
+        this.targetDate = dto.getTargetDate();
+        this.materials = dto.materialsDtoToMaterials(dto.getMaterials());
+        this.recordings = dto.getRecordings();
+    }
+
+
 
 
 
