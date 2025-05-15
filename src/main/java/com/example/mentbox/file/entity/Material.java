@@ -50,7 +50,6 @@ public class Material {
     private File file;
 
 
-    // 양방향 연관관계 설정용 헬퍼
     public void setFile(File file) {
         this.file = file;
     }

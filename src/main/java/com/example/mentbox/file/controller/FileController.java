@@ -2,13 +2,16 @@ package com.example.mentbox.file.controller;
 
 import com.example.mentbox.file.dto.FileRequest;
 import com.example.mentbox.file.dto.FileResponse;
+import com.example.mentbox.file.dto.ScheduleDto;
 import com.example.mentbox.file.service.FileService;
+import com.example.mentbox.file.service.Schedule;
 import com.example.mentbox.file.service.crud.FileCreate;
 import com.example.mentbox.member.entity.Member;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,9 +22,10 @@ import java.util.List;
 public class FileController {
 
     private final FileService fileService;
+    private final Schedule schedule;
 
     @PostMapping
-    public ResponseEntity<FileResponse> createFile(@Valid @RequestBody FileRequest request, Member member) {
+    public ResponseEntity<FileResponse> createFile(@Valid @RequestBody FileRequest request, @AuthenticationPrincipal Member member) {
         FileResponse file = fileService.create(request, member);
 
         return ResponseEntity.
@@ -30,7 +34,7 @@ public class FileController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FileResponse>> readFiles(Member member) {
+    public ResponseEntity<List<FileResponse>> readFiles(@AuthenticationPrincipal Member member) {
         List<FileResponse> responses = fileService.readMemberFiles(member);
 
         return ResponseEntity.status(HttpStatus.OK).body(responses);
@@ -46,6 +50,13 @@ public class FileController {
     @DeleteMapping("/{fileId}")
     public ResponseEntity<Void> deleteFile(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/api/files/schedule")
+    public ResponseEntity<List<ScheduleDto>> getSchedule(@AuthenticationPrincipal Member member) {
+        List<ScheduleDto> response = schedule.getSchedule(member);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 
