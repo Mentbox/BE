@@ -1,9 +1,11 @@
 package com.example.mentbox.recording.entity;
 
+import com.example.mentbox.common.entity.BaseTimeEntity;
 import com.example.mentbox.file.entity.File;
+import com.example.mentbox.recording.dto.RecordingRequest;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.Where;
 
 import java.util.List;
 
@@ -11,7 +13,10 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Recording {
+@Builder
+@Getter
+@Where(clause = "deleted = false")
+public class Recording extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,7 +28,7 @@ public class Recording {
 
 
     @OneToOne(mappedBy = "recording", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private AudioFile voiceFile;
+    private AudioFile audioFile;
 
     @OneToOne(mappedBy = "recording", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Score score;
@@ -32,6 +37,31 @@ public class Recording {
     @Column(columnDefinition = "TEXT")
     private String feedBack;
 
+    public void setScore(Score score) {
+        this.score = score;
+        score.setRecording(this);
+    }
+
+    public void setAudioFile(AudioFile audioFile) {
+        this.audioFile = audioFile;
+        audioFile.setRecording(this);
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+        file.addRecording(this);
+    }
+
+    public void update(RecordingRequest request) {
+
+        RecordingRequest.ScoreRequest score = request.getScore();
+        this.score.setAccuracy(score.getAccuracy());
+        this.score.setPronunciation(score.getPronunciation());
+        this.score.setIntonation(score.getIntonation());
+
+        this.feedBack = request.getFeedBack();
+
+    }
 
 
 }

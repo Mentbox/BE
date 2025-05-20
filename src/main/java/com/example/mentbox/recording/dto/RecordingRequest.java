@@ -1,13 +1,17 @@
 package com.example.mentbox.recording.dto;
 
+import com.example.mentbox.recording.entity.Recording;
+import com.example.mentbox.recording.entity.Score;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class RecordingRequest {
 
     @Size(max = 1000, message = "피드백은 1000자 이하로 입력해주세요.")
@@ -16,6 +20,14 @@ public class RecordingRequest {
     @Valid
     @NotNull
     private ScoreRequest score;
+
+    public Recording toEntity() {
+
+        return Recording.builder()
+                .feedBack(this.feedBack)
+                .score(this.score.toEntity())
+                .build();
+    }
 
     @Data
     public static class ScoreRequest {
@@ -34,5 +46,13 @@ public class RecordingRequest {
         @Max(value = 100, message = "억양 점수는 100 이하여야 합니다.")
         @NotNull
         private Integer intonation;
+
+        public Score toEntity() {
+            return Score.builder()
+                    .accuracy(this.accuracy)
+                    .pronunciation(this.pronunciation)
+                    .intonation(this.intonation)
+                    .build();
+        }
     }
 }

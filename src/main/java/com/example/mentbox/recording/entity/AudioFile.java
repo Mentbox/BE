@@ -3,8 +3,16 @@ package com.example.mentbox.recording.entity;
 import com.example.mentbox.common.entity.BaseTimeEntity;
 import com.example.mentbox.member.entity.Member;
 import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.Where;
 
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
+@Where(clause = "deleted = false")
 public class AudioFile extends BaseTimeEntity {
 
     @Id
@@ -13,7 +21,7 @@ public class AudioFile extends BaseTimeEntity {
 
     // presigned URL을 만들기 위한 S3 object key
     @Column(nullable = false, unique = true)
-    private String objectKey;
+    private String key;
 
     // 사용자가 업로드한 원본 파일 이름
     @Column(nullable = false)

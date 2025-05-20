@@ -21,7 +21,6 @@ public class FileDelete {
 
         File file = fileRepository.findById(id).orElseThrow(() -> new ThereIsNotThatFileException(ErrorCode.FILE_NOT_FOUND));
         file.markDeleted();
-        fileRepository.save(file);
 
     }
 

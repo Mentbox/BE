@@ -1,11 +1,18 @@
 package com.example.mentbox.recording.entity;
 
+import com.example.mentbox.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.Where;
 
 @Entity
 @NoArgsConstructor
-public class Score {
+@AllArgsConstructor
+@Builder
+@Getter
+@Setter
+@Where(clause = "deleted = false")
+public class Score extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
