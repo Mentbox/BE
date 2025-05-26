@@ -2,8 +2,6 @@ package com.example.mentbox.common.exception;
 
 public class NoFilesForMemberException extends MentboxServiceException{
 
-
-
     public NoFilesForMemberException(ErrorCode errorCode) {
         super(errorCode);
     }

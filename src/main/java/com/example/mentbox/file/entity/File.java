@@ -62,6 +62,9 @@ public class File extends BaseTimeEntity {
         material.setFile(this);
     }
 
+    public void addRecording(Recording recording) {
+    }
+
     public void removeMaterial(Material material) {
         materials.remove(material);
         material.setFile(null);
