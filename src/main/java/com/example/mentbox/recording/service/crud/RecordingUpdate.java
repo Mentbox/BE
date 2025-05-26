@@ -1,4 +1,4 @@
-package com.example.mentbox.recording.service;
+package com.example.mentbox.recording.service.crud;
 
 import com.example.mentbox.common.exception.AccessDeniedException;
 import com.example.mentbox.common.exception.ErrorCode;

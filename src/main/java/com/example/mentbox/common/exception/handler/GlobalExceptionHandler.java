@@ -60,6 +60,31 @@ public class GlobalExceptionHandler {
                 .body(body);
     }
 
+    @ExceptionHandler(NotSupportingSocialTypeException.class)
+    public ResponseEntity<String> handleNotSupportingSocialTypeException(NotSupportingSocialTypeException ex) {
+        return ResponseEntity
+                .badRequest()
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(ExpiredTokenException.class)
+    public ResponseEntity<ErrorResponse> handleExpiredToken(ExpiredTokenException ex) {
+        ErrorCode errorCode = ex.getErrorCode();
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(new ErrorResponse(errorCode.name(), errorCode.getMessage()));
+    }
+
+    @ExceptionHandler(UnAuthorizedTokenException.class)
+    public ResponseEntity<ErrorResponse> handleUnAuthorized(UnAuthorizedTokenException ex) {
+        ErrorCode errorCode = ex.getErrorCode();
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(new ErrorResponse(errorCode.name(), errorCode.getMessage()));
+    }
+
+
+
     @RequiredArgsConstructor
     @Getter
     public static class ErrorResponse {
