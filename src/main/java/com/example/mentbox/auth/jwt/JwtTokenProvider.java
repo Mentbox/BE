@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
@@ -17,17 +18,15 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
-    @Value("${jwt.secret")
-    private String secretKey;
 
-    @Value("%{jwt.expiration}")
+    @Value("${jwt.expiration}")
     private long expirationMillis;
 
     private Key key;
 
     @PostConstruct
     public void init() {
-        this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
+        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 
     public String createAccessToken(Long memberId) {

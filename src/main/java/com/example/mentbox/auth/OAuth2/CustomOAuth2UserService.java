@@ -1,13 +1,18 @@
 package com.example.mentbox.auth.OAuth2;
 
+import com.example.mentbox.auth.OAuth2.CustomOAuth2User;
 import com.example.mentbox.common.exception.ErrorCode;
 import com.example.mentbox.common.exception.NotSupportingSocialTypeException;
 import com.example.mentbox.member.SocialType;
 import com.example.mentbox.member.entity.Member;
 import com.example.mentbox.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
@@ -15,56 +20,28 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class CustomOAuth2UserService extends DefaultOAuth2UserService {
+public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final MemberRepository memberRepository;
+    private final DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
 
     @Override
-    public OAuth2User loadUser(OAuth2UserRequest request) {
-        OAuth2User oAuth2User = super.loadUser(request);
+    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
-        String registrationId = request.getClientRegistration().getRegistrationId();
-        SocialType socialType = SocialType.from(registrationId);
+        OAuth2User oauth2User = delegate.loadUser(userRequest);
+        Map<String, Object> attrs = oauth2User.getAttributes();
 
-        Map<String, Object> attributes = oAuth2User.getAttributes();
-
-        String socialId = extractSocialId(socialType, attributes);
-        String email = extractEmail(socialType, attributes);
-
-        Member member = memberRepository.findBySocialTypeAndSocialId(socialType, socialId)
+        String socialId = String.valueOf(attrs.get("id"));
+        Member member = memberRepository.findBySocialTypeAndSocialId(SocialType.KAKAO, socialId)
                 .orElseGet(() -> memberRepository.save(
                         Member.builder()
-                                .socialType(socialType)
+                                .socialType(SocialType.KAKAO)
                                 .socialId(socialId)
-                                .email(email)
                                 .name(null)
-                                .build()
-                ));
+                                .build()));
 
-        return new CustomOAuth2User(member, attributes);
-
+        return new CustomOAuth2User(member, attrs);
     }
 
-    private String extractSocialId(SocialType type, Map<String, Object> attributes) {
-
-        if (type == SocialType.KAKAO) {
-            return String.valueOf(attributes.get("id"));
-        } else if (type == SocialType.GOOGLE) {
-            return (String) attributes.get("sub");
-        }
-
-        throw new NotSupportingSocialTypeException(ErrorCode.NotSupportingSocialType);
-    }
-
-    private String extractEmail(SocialType type, Map<String, Object> attributes) {
-        if (type == SocialType.KAKAO) {
-            Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
-            return (String) kakaoAccount.get("email");
-        } else if (type == SocialType.GOOGLE) {
-            return (String) attributes.get("email");
-        }
-
-        return null;
-    }
 
 }

@@ -27,11 +27,7 @@ public class Member {
     @Column(nullable = false, unique = true)
     private String socialId;
 
-    //사용자 입력이 아닌 소셜에서 제공하는 이메일
-    @Column(nullable = false, unique = true)
-    private String email;
-
-    @Column(nullable = false, length = 15)
+    @Column(length = 15)
     private String name;
 
     @Column(name = "profile_image_key")
