@@ -71,5 +71,17 @@ public class S3Uploader {
 
         return s3Presigner.presignGetObject(presignRequest).url().toString();
     }
-    
+
+    public void delete(String key) {
+        try {
+            s3Client.deleteObject(builder -> builder
+                    .bucket(bucket)
+                    .key(key)
+            );
+        } catch (SdkClientException e) {
+            System.err.println("S3 파일 삭제 실패: " + key);
+        }
+    }
+
+
 }

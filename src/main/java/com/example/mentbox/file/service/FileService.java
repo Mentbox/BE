@@ -8,6 +8,8 @@ import com.example.mentbox.file.service.crud.FileRead;
 import com.example.mentbox.file.service.crud.FileUpdate;
 import com.example.mentbox.member.entity.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,16 +36,21 @@ public class FileService {
 
     }
 
-    public FileResponse readMemberFile(Long fileId) {
-        return fileRead.readFile(fileId);
+    public ResponseEntity<FileResponse> readOne(Long fileId) {
+        FileResponse fileResponse = fileRead.readFile(fileId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(fileResponse);
+
     }
 
     public FileResponse update(Long fileId, FileRequest request) {
         return fileUpdate.updateFile(fileId, request);
     }
 
-    public void delete(Long fileId) {
+    public ResponseEntity<Void> delete(Long fileId) {
         fileDelete.deleteFile(fileId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+
     }
 
 

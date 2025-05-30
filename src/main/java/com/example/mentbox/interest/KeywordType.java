@@ -2,7 +2,9 @@ package com.example.mentbox.interest;
 
 import com.example.mentbox.common.exception.ErrorCode;
 import com.example.mentbox.common.exception.ThereIsNotThatKeywordException;
+import lombok.Getter;
 
+@Getter
 public enum KeywordType {
     JOB_HUNTING("취준"),
     TEAM_PROJECT("팀플"),

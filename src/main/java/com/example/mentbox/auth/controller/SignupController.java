@@ -8,10 +8,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,10 +20,10 @@ public class SignupController {
 
 
     @PostMapping("/signup-details")
-    public ResponseEntity<Void> signup(@AuthenticationPrincipal CustomOAuth2User oAuth2User, @RequestBody @Valid SignupDetailRequest request) {
+    public ResponseEntity<Void> signup(@AuthenticationPrincipal CustomOAuth2User oAuth2User, @RequestPart("data") @Valid SignupDetailRequest request, @RequestPart("audio")MultipartFile imageFile) {
         Member member = oAuth2User.getMember();
 
-        return signupDetail.signup(member, request);
+        return signupDetail.signup(member, request, imageFile);
 
     }
 }

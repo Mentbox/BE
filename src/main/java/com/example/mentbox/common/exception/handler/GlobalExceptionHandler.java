@@ -84,12 +84,21 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ThereIsNotThatKeywordException.class)
-    public ResponseEntity<ErrorResponse> handleNotSupportKeyword(ThereIsNotThatKeywordException exc) {
-        ErrorCode errorCode = exc.getErrorCode();
+    public ResponseEntity<ErrorResponse> handleNotSupportKeyword(ThereIsNotThatKeywordException ex) {
+        ErrorCode errorCode = ex.getErrorCode();
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(errorCode.name(), errorCode.getMessage()));
+    }
+
+    @ExceptionHandler(AudioFileEmptyException.class)
+    public ResponseEntity<ErrorResponse> handleAudioFileEmpty(AudioFileEmptyException ex) {
+        ErrorCode errorCode = ex.getErrorCode();
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(errorCode.name(),  errorCode.getMessage()));
     }
 
 
