@@ -14,7 +14,8 @@ public enum ErrorCode {
     ExpiredToken("기간이 만료된 토큰입니다."),
     UnAuthorizedToken("유효하지 않은 토큰입니다."),
     ThereIsNotThatMember("해당 회원이 존재하지 않습니다."),
-    ThereIsNotThatKeywordException("해당 키워드는 존재하지 않습니다.")
+    ThereIsNotThatKeywordException("해당 키워드는 존재하지 않습니다."),
+    AudioFileEmptyException("오디오 파일이 첨부되지 않았습니다.")
     ;
 
 

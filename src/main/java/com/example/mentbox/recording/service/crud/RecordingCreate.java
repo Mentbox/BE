@@ -1,6 +1,7 @@
 package com.example.mentbox.recording.service.crud;
 
 import com.example.mentbox.common.exception.AccessDeniedException;
+import com.example.mentbox.common.exception.AudioFileEmptyException;
 import com.example.mentbox.common.exception.ErrorCode;
 import com.example.mentbox.common.exception.ThereIsNotThatFileException;
 import com.example.mentbox.file.entity.File;
@@ -28,6 +29,11 @@ public class RecordingCreate {
     @Transactional
     public RecordingResponse createRecording(Long fileId, MultipartFile audioFile, RecordingRequest request, Member member) {
         File file = fileRepository.findById(fileId).orElseThrow(() -> new ThereIsNotThatFileException(ErrorCode.FILE_NOT_FOUND));
+
+
+        if (audioFile == null || audioFile.isEmpty()) {
+            throw new AudioFileEmptyException(ErrorCode.AudioFileEmptyException);
+        }
 
         if (!file.getMember().equals(member)) {
             throw new AccessDeniedException(ErrorCode.AccessDenied);
