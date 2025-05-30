@@ -22,18 +22,21 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
 
-        // 🔹 로그인 성공한 사용자 정보 꺼냄
+
         CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
         Member member = oAuth2User.getMember();
 
-        // 🔹 JWT 발급
+
         String accessToken = jwtTokenProvider.createAccessToken(member.getId());
 
-        // 🔹 응답 설정
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.setContentType("application/json;charset=UTF-8");
+        String redirectUrl;
+        if (member.getName() == null) {
+            redirectUrl = "https://localhost:8080/signup-details";
+        } else {
+            redirectUrl = "https://localhost:8080";
+        }
 
-        // 🔹 토큰을 JSON으로 응답 (프론트가 쉽게 처리하게)
-        response.getWriter().write("{\"accessToken\": \"" + accessToken + "\"}");
+        // ✅ 쿼리 파라미터로 토큰 전달
+        response.sendRedirect(redirectUrl + "?token=" + accessToken);
     }
 }

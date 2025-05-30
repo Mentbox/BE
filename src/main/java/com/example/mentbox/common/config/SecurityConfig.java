@@ -1,6 +1,9 @@
 package com.example.mentbox.common.config;
 
+
+import com.example.mentbox.auth.OAuth2.CustomOAuth2User;
 import com.example.mentbox.auth.OAuth2.CustomOAuth2UserService;
+import com.example.mentbox.auth.OAuth2.CustomOidcUserService;
 import com.example.mentbox.auth.OAuth2.OAuth2LoginSuccessHandler;
 import com.example.mentbox.auth.jwt.JwtAuthenticationFilter;
 import com.example.mentbox.auth.jwt.JwtTokenProvider;
@@ -20,6 +23,7 @@ public class SecurityConfig {
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberRepository memberRepository;
+    private final CustomOidcUserService customOidcUserService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -32,7 +36,9 @@ public class SecurityConfig {
                         .anyRequest().permitAll()) // 그 외는 모두 허용
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo -> userInfo
-                                .userService(customOAuth2UserService)) // 사용자 정보 커스텀 서비스
+                                .userService(customOAuth2UserService)
+                                .oidcUserService(customOidcUserService)
+                        ) // 사용자 정보 커스텀 서비스
                         .successHandler(oAuth2LoginSuccessHandler)) // 로그인 성공 핸들러 등록
         ;
 

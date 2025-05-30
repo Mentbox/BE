@@ -83,6 +83,14 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(errorCode.name(), errorCode.getMessage()));
     }
 
+    @ExceptionHandler(ThereIsNotThatKeywordException.class)
+    public ResponseEntity<ErrorResponse> handleNotSupportKeyword(ThereIsNotThatKeywordException exc) {
+        ErrorCode errorCode = exc.getErrorCode();
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(errorCode.name(), errorCode.getMessage()));
+    }
 
 
     @RequiredArgsConstructor
