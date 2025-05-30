@@ -31,7 +31,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         String redirectUrl;
         if (member.getName() == null) {
-            redirectUrl = "https://localhost:8080/signup";
+            redirectUrl = "https://localhost:8080/signup-details";
         } else {
             redirectUrl = "https://localhost:8080";
         }

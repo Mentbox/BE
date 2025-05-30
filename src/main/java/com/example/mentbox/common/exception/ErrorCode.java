@@ -13,7 +13,8 @@ public enum ErrorCode {
     NotSupportingSocialType("지원하지않는 소셜 로그인 입니다."),
     ExpiredToken("기간이 만료된 토큰입니다."),
     UnAuthorizedToken("유효하지 않은 토큰입니다."),
-    ThereIsNotThatMember("해당 회원이 존재하지 않습니다.")
+    ThereIsNotThatMember("해당 회원이 존재하지 않습니다."),
+    ThereIsNotThatKeywordException("해당 키워드는 존재하지 않습니다.")
     ;
 
 

@@ -1,5 +1,8 @@
 package com.example.mentbox.interest;
 
+import com.example.mentbox.common.exception.ErrorCode;
+import com.example.mentbox.common.exception.ThereIsNotThatKeywordException;
+
 public enum KeywordType {
     JOB_HUNTING("취준"),
     TEAM_PROJECT("팀플"),
@@ -15,5 +18,14 @@ public enum KeywordType {
 
     KeywordType(String displayName) {
         this.displayName = displayName;
+    }
+
+    public static KeywordType stringToEnum(String string) {
+        for (KeywordType value : KeywordType.values()) {
+            if (value.displayName.equals(string)) {
+                return value;
+            }
+        }
+        throw new ThereIsNotThatKeywordException(ErrorCode.ThereIsNotThatKeywordException);
     }
 }
