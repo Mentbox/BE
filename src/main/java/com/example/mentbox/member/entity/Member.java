@@ -1,9 +1,12 @@
 package com.example.mentbox.member.entity;
 
+import com.example.mentbox.common.entity.BaseTimeEntity;
+import com.example.mentbox.file.entity.File;
 import com.example.mentbox.interest.entity.Interest;
 import com.example.mentbox.member.SocialType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +18,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Setter
-public class Member {
+@Where(clause = "deleted = false")
+public class Member extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,8 +41,12 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Interest> interests = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member")
+    private List<File> files = new ArrayList<>();
+
     /** 관심사 전체 교체 */
     public void setInterests(List<Interest> newInterests) {
+
         this.interests.clear();
         this.interests.addAll(newInterests);
     }
@@ -50,4 +58,18 @@ public class Member {
         setInterests(newInterests);
     }
 
+    @Override
+    public void markDeleted() {
+        super.markDeleted();
+
+        for (File file : files) {
+            file.markDeleted();
+        }
+
+        for (Interest interest : interests) {
+            interest.markDeleted();
+        }
+
+
+    }
 }
