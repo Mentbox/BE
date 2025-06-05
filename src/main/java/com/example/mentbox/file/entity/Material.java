@@ -1,9 +1,11 @@
 package com.example.mentbox.file.entity;
 
+import com.example.mentbox.common.entity.BaseTimeEntity;
 import com.example.mentbox.file.utility.DurationToLongConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 import java.time.Duration;
 import java.time.LocalTime;
@@ -16,7 +18,8 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Material {
+@Where(clause = "deleted = false")
+public class Material extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,5 +56,7 @@ public class Material {
     public void setFile(File file) {
         this.file = file;
     }
+
+
 
 }

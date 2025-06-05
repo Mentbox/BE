@@ -6,6 +6,7 @@ import com.example.mentbox.member.dto.MemberResponse;
 import com.example.mentbox.member.entity.Member;
 import com.example.mentbox.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,14 @@ public class MemberController {
         Member member = oAuth2User.getMember();
         return memberService.update(member, audioFile, request);
 
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> delete(@AuthenticationPrincipal CustomOAuth2User oAuth2User) {
+        Member member = oAuth2User.getMember();
+        member.markDeleted();
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 

@@ -63,5 +63,10 @@ public class Recording extends BaseTimeEntity {
 
     }
 
-
+    @Override
+    public void markDeleted() {
+        super.markDeleted();
+        audioFile.markDeleted();
+        score.markDeleted();
+    }
 }

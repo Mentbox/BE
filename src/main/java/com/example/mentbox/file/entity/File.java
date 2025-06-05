@@ -76,10 +76,16 @@ public class File extends BaseTimeEntity {
         this.recordings = dto.getRecordings();
     }
 
+    @Override
+    public void markDeleted() {
+        super.markDeleted();
 
+        for (Material material : materials) {
+            material.markDeleted();
+        }
 
-
-
-
-
+        for (Recording recording : recordings) {
+            recording.markDeleted();
+        }
+    }
 }
