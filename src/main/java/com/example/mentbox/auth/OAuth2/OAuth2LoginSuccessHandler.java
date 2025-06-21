@@ -31,9 +31,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         String redirectUrl;
         if (member.getName() == null) {
-            redirectUrl = "https://localhost:8080/signup-details";
+            redirectUrl = "http://localhost:8080/signup-details";
         } else {
-            redirectUrl = "https://localhost:8080";
+            redirectUrl = "http://localhost:8080";
         }
 
         // ✅ 쿼리 파라미터로 토큰 전달

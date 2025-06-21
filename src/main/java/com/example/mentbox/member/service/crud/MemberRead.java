@@ -8,8 +8,6 @@ import com.example.mentbox.member.entity.Member;
 import com.example.mentbox.member.repository.MemberRepository;
 import com.example.mentbox.recording.utility.S3Uploader;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -44,7 +42,6 @@ public class MemberRead {
         }
 
         return response;
-
 
     }
 }
