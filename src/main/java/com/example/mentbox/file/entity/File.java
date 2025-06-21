@@ -58,11 +58,13 @@ public class File extends BaseTimeEntity {
     private Member member;
 
     public void addMaterial(Material material) {
-        materials.add(material);
         material.setFile(this);
+        materials.add(material);
+
     }
 
     public void addRecording(Recording recording) {
+        this.recordings.add(recording);
     }
 
     public void removeMaterial(Material material) {
@@ -72,8 +74,18 @@ public class File extends BaseTimeEntity {
     public void update(FileRequest dto) {
         this.title = dto.getTitle();
         this.targetDate = dto.getTargetDate();
-        this.materials = dto.materialsDtoToMaterials(dto.getMaterials());
-        this.recordings = dto.getRecordings();
+        this.materials.clear();
+        for (FileRequest.MaterialDto material : dto.getMaterials()) {
+            this.addMaterial(material.toEntity());
+        }
+        this.recordings.clear();
+        List<Recording> recordings = dto.getRecordings();
+        if (recordings != null) {
+            for (Recording recording : recordings) {
+                this.recordings.add(recording);
+                recording.setFile(this);
+            }
+        }
     }
 
     @Override

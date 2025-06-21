@@ -1,5 +1,6 @@
 package com.example.mentbox.auth.jwt;
 
+import com.example.mentbox.auth.OAuth2.CustomOAuth2User;
 import com.example.mentbox.common.exception.ErrorCode;
 import com.example.mentbox.common.exception.ThereIsNotThatMemberException;
 import com.example.mentbox.member.entity.Member;
@@ -17,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Map;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -36,7 +38,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 Member member = memberRepository.findById(userId)
                         .orElseThrow(() -> new ThereIsNotThatMemberException(ErrorCode.ThereIsNotThatMember));
 
-                Authentication authentication = new JwtAuthenticationToken(member);
+
+                CustomOAuth2User customOAuth2User = new CustomOAuth2User(member, Map.of());
+                Authentication authentication = new JwtAuthenticationToken(customOAuth2User);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
 
